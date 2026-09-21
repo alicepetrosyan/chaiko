@@ -7,8 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import Syrup from '../RecipeClass';
 
-const WS_URL = 'ws://localhost:8000/ws/orders';
-// const WS_URL = 'ws://192.168.0.185:8000/ws/orders';
+const WS_URL = `ws://${import.meta.env.IP_ADDRESS}:8000/ws/orders`;
 
 const RecipeCard = ({recipe, updatedRecipe, onDelete, onUpdate, onSendStatus}) => {
     const maxSyrups = 4;
@@ -63,8 +62,8 @@ const RecipeCard = ({recipe, updatedRecipe, onDelete, onUpdate, onSendStatus}) =
         if (!canSend || sending) return;
         setSending(true);
 
-        const orderedPumpCounts = Array(order.length).fill(0);
-        order.forEach((syrupName, index) => {
+        const orderedPumpCounts = Array(4).fill(0);
+        order.slice(0, 4).forEach((syrupName, index) => {
             if (!syrupName || syrupName === 'none') {
                 orderedPumpCounts[index] = 0;
                 return;
