@@ -1,5 +1,7 @@
 import { create } from "zustand"
 
+const API_BASE_URL = `http://${import.meta.env.IP_ADDRESS}:8000`;
+
 export const useRecipeCatalog = create((set) => ({
     recipes: [],
     setRecipes: (recipes) => set({ recipes }),
@@ -15,8 +17,7 @@ export const useRecipeCatalog = create((set) => ({
     if (!hasAtLeastOneSyrup) {
       return { success: false, message: "At least one syrup must be added to the recipe" };
     }
-        const res = await fetch('http://localhost:8000/api/recipes', {
-        // const res = await fetch('http://192.168.0.185:8000/api/recipes', {
+        const res = await fetch(`${API_BASE_URL}/api/recipes`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -29,14 +30,12 @@ export const useRecipeCatalog = create((set) => ({
         
     },
     fetchRecipes: async () => {
-        const res = await fetch('http://localhost:8000/api/recipes');
-        // const res = await fetch('http://192.168.0.185:8000/api/recipes');
+        const res = await fetch(`${API_BASE_URL}/api/recipes`);
         const data = await res.json();
         set({ recipes: data.data });
     },
     deleteRecipe: async (id) => {
-         const res = await fetch(`http://localhost:8000/api/recipes/${id}`, {
-         // const res = await fetch(`http://192.168.0.185:8000/api/recipes/${id}`, {
+         const res = await fetch(`${API_BASE_URL}/api/recipes/${id}`, {
             method: "DELETE"
         });
         const data = await res.json();
@@ -54,7 +53,7 @@ export const useRecipeCatalog = create((set) => ({
         if (!hasAtLeastOneSyrup) {
             return { success: false, message: "At least one syrup must be added to the recipe" };
         }
-        const res = await fetch(`http://localhost:8000/api/recipes/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/recipes/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -78,8 +77,7 @@ export const syrupOrder = create((set) => ({
   setOrder: (newOrder) => set({ order: newOrder }),
   fetchOrder: async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/config');
-      // const res = await fetch('http://192.168.0.185:8000/api/config');
+      const res = await fetch(`${API_BASE_URL}/api/config`);
       const data = await res.json();
       set({ order: data.data });
     } catch (error) {
@@ -89,8 +87,7 @@ export const syrupOrder = create((set) => ({
   },
   saveOrder: async (updatedOrder) => {
     try {
-      const response = await fetch('http://localhost:8000/api/config', {
-      // const response = await fetch('http://192.168.0.185:8000/api/config', {
+      const response = await fetch(`${API_BASE_URL}/api/config`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

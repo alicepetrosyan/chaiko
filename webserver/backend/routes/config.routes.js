@@ -25,7 +25,10 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const sanitizedOrder = order.map((item) => (typeof item === 'string' ? item.trim() : '')).filter(Boolean);
+    const sanitizedOrder = Array.from({ length: 4 }, (_, index) => {
+      const item = order[index];
+      return typeof item === 'string' && item.trim() ? item.trim() : 'none';
+    });
     const config = await Config.findOneAndUpdate(
       { key: 'syrupOrder' },
       { key: 'syrupOrder', order: sanitizedOrder.length > 0 ? sanitizedOrder : DEFAULT_ORDER },
